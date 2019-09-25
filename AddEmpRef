@@ -1,0 +1,27 @@
+@Autowired
+    UserAccountRepository userAccountRepository;
+
+    /*
+     * Mapping url exmaple:
+     * http://localhost:8080/userAccount/add?userName=Jerry&password=888888&email=
+     * jerry@dev2qa.com
+     * http://localhost:8080/userAccount/add?userName=Richard&password=888888&email=
+     * richard@google.com
+     */
+    @GetMapping(path = "/add")
+    @ResponseBody
+    public String addUser(@RequestParam String userName, @RequestParam String password, @RequestParam String email) {
+
+        UserAccount userAccount = new UserAccount();
+        userAccount.setUsername(userName);
+        userAccount.setPassword(password);
+        userAccount.setEmail(email);
+
+        userAccountRepository.save(userAccount);
+
+        String ret = "User account has been added, user name = " + userName + ", password = " + password + ", email = "
+                + email;
+
+        return ret;
+
+    }
