@@ -62,3 +62,44 @@ Application Server	:Tomcat,PHPMyAdmin,XAMPP
 IDE			:Eclipse,STS 4.0
 	 
 	 
+EPP phase 1:
+After the first year annual premium, system needs to capture the payment mode for 
+second year premium mode. The available payment can be annually, semi-annual, 
+quarterly or monthly. The system will notify the customers before the end of the 
+first year annual premium toinform them regarding on the payment mode of the premium 
+for the following year.
+
+EPP phase 2:
+After the first year annual premium, system needs to capture the payment mode for second 
+year premium mode. The available payment mode can be annually, semi-annual, quarterly or 
+monthly. The system will notify the user to change their payment mode by 2 months before 
+the policy’s anniversary date. To make a batch processing job that will be scheduled daily 
+to check the EPP record.
+
+Check rookie agent on registration stage:
+To notify the user if the agent’s contract is less than 1 year before the record is saved 
+during application registration.
+The existing system has the mechanism to check if the agent’s contract is less than a year 
+but it happens during auto issue processing and is considered too late to make any changes. 
+The existing system exclude the checking on agent’s contracted date if the product from 
+Credit life, MAMSB product, standalone medical card. There is no checking for cases submitted 
+via FA channel or if agent is UM or AM. 
+
+Ad-hoc Process of Collection Transaction:
+To enhance Collection module in PICS to allow ad-hoc(instantly) process for processing the 
+collection from Collection Data-Entry (Per Policy) screen.
+The existing system can process the transaction by using opt 70 = Process Collections 
+from Collection menu.
+
+Enhancement on Compensation Report:                                              
+Enhancement of AC718S screen to include filtering option based on the BSC Effective 
+date and includes additional fields of issue date and production date in report.
+Those policies with production month from previous years up to the production month 
+specified in the screen will be included in the report if the production type is YTD.
+
+Bid Offer Spread Lawson Automation:
+To automate the LAWSON entry by figuring the Bid Offer Spread amount for each affected fund.
+The BOS amount must be tally BOS amount in BOS summary report by checking total BOS obtained
+with BOS amount in summary report.
+The amount will be mapped to LAWSON account for the Debit and Credit. Then, the file will be
+pushed to LAWSON server and will be processed by LAWSON.
