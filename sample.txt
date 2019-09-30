@@ -1,0 +1,107 @@
+***Select rec link to other file
+insert into t19502/n1app3                   
+select * from p3tilib/n1app3 where n1poln in
+(select wfcpno from t19502/wfcpf1)  
+
+***Join
+select * from pics4dlib/aes14cus join pics4dlib/aea19nam on    
+aes14poln=trim(aea19poln) join pics4dlib/aem00pr1 on           
+aea19pers=aem00pers join pics4dlib/aen02plm on                 
+aes14poln=trim(aen02poln) where aea19pers=3992                 
+and aea19payi='Y'           
+ 
+
+***Group by 
+1)Find those case id with Underwriter ID(N1UWID)=' ' and Caseid(JE8CASD)<>' '
+==>Create UW1
+SELECT je8poln,max(je8casd) casd FROM p3tilib/je8paw WHERE je8poln 
+in (select n1poln from p3tilib/n1appm where n1uwid=' ') 
+and je8casd<>' '             
+GROUP BY je8poln order by je8poln
+	>>>File UW1 in XMNHLIB was created.
+     
+
+***Insert
+insert into xmnhlib/uw2                                           
+SELECT distinct je8paw.*,a9pers                                   
+FROM p3tilib/je8paw,p3tilib/jr9raw,p3tilib/a9serv WHERE je8casd in
+(select casd from xmnhlib/uw1) and je8asta in ('CLEAN_CASE') and  
+ je8casd= jr9casd and jr9trgr='ROUTE_TO_UW' and                   
+a9poln=je8poln and je8rwno=a9rwno      	                           
+	>>>5 rows inserted in UW2 in XMNHLIB. 
+
+
+***Use cast & case
+select distinct uw3.*,jbwawrd,              
+case when jbwawrd='MDRT' and                
+cast((n2apsb+19000000)/10000 as int)=jbwawdt
+then 'Y' else 'N' end as MDRT_Ind           
+from xmnhlib/uw3 join jbwmd1 on             
+a9pers=jbwpers and                          
+cast((n2apsb+19000000)/10000 as int)=jbwawdt
+	>>>File UW4 in XMNHLIB was created.
+
+	
+***Insert opt in CL,COMMIT(*NC),else hit error
+***Insert not applicable in query
+RUNSQL     SQL('insert into xmnh19149/uw2 SELECT +          
+             distinct je8paw.*,a9pers FROM +                
+             p3tilib/je8paw,p3tilib/jr9raw,p3tilib/a9serV + 
+             WHERE je8casd in (select casd from +           
+             xmnh19149/uw1) and je8asta in +                
+             (''CLEAN_CASE'') and je8casd= jr9casd and +    
+             jr9trgr=''ROUTE_TO_UW'' and +                  
+             a9poln=je8poln and je8rwno=a9rwno') +          
+             COMMIT(*NC)                                    
+
+			 
+***Change CYMD to YYYYMMDD
+SELECT decimal(Date_of_Registration+19000000,8,0) prod_mth, 
+oepoln pol_no,oerwno  
+rwn_no,oepers pers#, pos,taprm adj_prm FROM xmnhlib/mnh04 ORDER BY
+prod_mth,oepoln,oerwno,pos,oepers  
+
+***Having 
+select count(policy_number) as count,policy_number
+from p3t6lib/auw_uw                               
+group by policy_number                            
+having count(policy_number)>1                     
+order by policy_number       
+
+***Search with two keys
+3)GET MAX EEEERF   	
+select * from xmnhlib/ee1 where eejtyp='N' and    
+(eepoln,eeeerf) in (select eepoln,max(eeeerf) from
+xmnhlib/ee2 group by eepoln)                       
+
+***Using count 
+select count(distinct(nxpoln)) from xmnhlib/mnh10a
+
+
+***Use mod(remainder in DB2)
+SELECT n2plno,n7pncd,mod(n7andt,100) xdday,
+
+***in
+SELECT n1poln,n2dudt FROM n1appm,n2plm1 WHERE               
+n2dudt>0 and n1asta=80 and n2plno=n1poln and n2plst='IP' and
+n1poln in (select n2plno from n2plm1 group by n2plno having 
+count(*)>1) order by n1poln                                 
+
+**************************************
+***Sending parm to SQL
+**************************************
+DCL     VAR(&PRD1) TYPE(*DEC) LEN(7 0)   /*PROD DATE IN DEC */                                          
+DCL     VAR(&PRD2) TYPE(*CHAR) LEN(7)   /*PROD DATE IN CHAR */
+RTVDTAARA  DTAARA(S1PRD1) RTNVAR(&PRD1)                                                                
+CHGVAR     VAR(&PRD2) VALUE(&PRD1)  
+STRQMQRY   QMQRY(PICS3HLIB/MANU_IL01) OUTPUT(*OUTFILE) +                                 
+		   OUTFILE(FTFLIB/MANU_IL01) SETVAR((PRD1 &PRD2))  -->&PRD2 has to be in Capital letter
+--------------------------------------------------------------------------------------------------
+select n2plno Policy_Num,n2rwno Renewal_Num,
+n2isdt Issue_Date,n2apsb Submitted_Date,n2andt Policy/Rider_Date,
+from ftflib/manu_il01,a9serv,ftflib/manu_il02,
+a0mast,m0prsn,a3stru,mpregn
+where n2plno=a9poln and n2rwno=a9rwno
+and a9poln=poln and a9rwno=rwno and a9seqn=seqn
+and a9pers=a0pers and a0pers=m0pers and a0regn=mpregn
+and m0pers=a3pers and a3prod = &PRD1				-->-->&PRD1 has to be in Capital letter
