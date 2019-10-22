@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ManagerReportFile" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="69cd2eb2-b18b-4cfe-8d92-9d0a98358ba9">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="manager_ID" class="java.lang.String"/>
+	<parameter name="manager_FName" class="java.lang.String"/>
+	<parameter name="manager_LName" class="java.lang.String"/>
+	<parameter name="position_ID" class="java.lang.String"/>
+	<parameter name="position_Title" class="java.lang.String"/>
+	<parameter name="department_ID" class="java.lang.String"/>
+	<parameter name="department_Name" class="java.lang.String"/>
+	<parameter name="controlling_Office" class="java.lang.String"/>
+	<parameter name="department_Add1" class="java.lang.String"/>
+	<parameter name="department_Add2" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="43" splitType="Stretch">
+			<staticText>
+				<reportElement x="162" y="10" width="230" height="27" uuid="5c26fdf5-d2d0-48b9-a295-faa218125798"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Manager Information Details]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="247" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="6" width="120" height="14" uuid="8ba7e362-c320-4005-8daf-1902cfcb608c"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Information summary]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="39" width="68" height="19" uuid="74f28942-384a-4d2d-a19f-1ca9e3850965"/>
+				<text><![CDATA[Manager ID:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="140" y="40" width="100" height="19" uuid="486b3631-7d1e-448c-85ad-f7ddab50cc0d"/>
+				<textFieldExpression><![CDATA[$P{manager_ID}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="59" width="80" height="19" uuid="0c78a2c8-a3b1-47aa-87f3-9567f68834b5"/>
+				<text><![CDATA[Manager Name:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="140" y="59" width="150" height="17" uuid="2acc3616-9a01-47df-a9bc-b6c41e1017a9"/>
+				<textFieldExpression><![CDATA[$P{manager_FName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="292" y="59" width="138" height="17" uuid="edaad9d7-da29-471f-898d-50dc474452e6"/>
+				<textFieldExpression><![CDATA[$P{manager_LName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="79" width="80" height="19" uuid="295f02b7-81ff-480c-a530-977b134f727a"/>
+				<text><![CDATA[Position Details:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="140" y="79" width="80" height="19" uuid="a8b9dc7c-5a2e-4c6c-a10b-81200fd9cf4b"/>
+				<textFieldExpression><![CDATA[$P{position_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="79" width="144" height="19" uuid="dba47f28-4d5a-4274-88e0-3a6fb248f8b5"/>
+				<textFieldExpression><![CDATA[$P{position_Title}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="99" width="100" height="19" uuid="94bd5963-7668-468d-886a-7d26abe987a5"/>
+				<text><![CDATA[Department Details:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="140" y="99" width="100" height="19" uuid="fae6c70e-14ef-402b-8091-014ac1a8b302"/>
+				<textFieldExpression><![CDATA[$P{department_ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="119" width="130" height="20" uuid="950e1af5-f94a-4114-a36e-eb7247c267e7"/>
+				<textFieldExpression><![CDATA[$P{department_Name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="139" width="140" height="20" uuid="c08f11ab-7351-4218-8f1a-579ac23c88f0"/>
+				<textFieldExpression><![CDATA[$P{controlling_Office}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="159" width="150" height="20" uuid="66361f1c-e927-4e46-8845-6eb68f0d73e3"/>
+				<textFieldExpression><![CDATA[$P{department_Add1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="179" width="150" height="20" uuid="45497aec-7748-4a9c-9a44-c4dbaa537c26"/>
+				<textFieldExpression><![CDATA[$P{department_Add2}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="10" width="110" height="20" uuid="f7afc220-9a70-49c5-803d-a57a61165b25"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Visualogic Resouces]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+		</band>
+	</summary>
+</jasperReport>
