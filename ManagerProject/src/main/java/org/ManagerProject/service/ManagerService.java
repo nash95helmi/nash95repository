@@ -147,6 +147,22 @@ public class ManagerService {
 	}
 	
 	/**
+	 * Find DocID based on managerID
+	 * @param managerID
+	 */
+	public DocMaster getDocMaster(String managerID) {
+		Optional<DocMaster> opt = docMasterRepo.findByid(managerID);
+		DocMaster docMaster = null;
+		if(opt.isPresent()){
+			docMaster = opt.get();
+		}
+//		if(opt != null) {
+//			docMaster = opt.get();
+//		}
+		return docMaster;
+	}
+	
+	/**
 	 * Save the document in DocMst after generate 
 	 * the file id
 	 * @param docMaster
@@ -154,6 +170,7 @@ public class ManagerService {
 	public void SaveDocMaster(DocMaster docMaster) {
 		docMasterRepo.save(docMaster);
 	}
+	
 	
 	/**
 	 * Get the manager by managerid, if found proceed to find 

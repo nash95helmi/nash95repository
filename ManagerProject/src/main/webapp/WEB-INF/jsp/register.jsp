@@ -113,7 +113,7 @@ a {
   	</select>
   	
   	<label for="mEmel"><b>Manager Email</b></label>
-    <input type="text" name="mEmel" value='nasaruddin.helmi@yahoo.com' readonly>
+    <input type="text" name="mEmel" value='nash95.helmi@gmail.com' readonly>
     
     <hr>
     <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>

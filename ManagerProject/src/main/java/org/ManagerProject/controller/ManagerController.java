@@ -127,6 +127,8 @@ public class ManagerController extends RestClient{
 					
 					MailAttachment mailAttachment = new MailAttachment(documents.getName(), documents.getContents(), documents.getType());
 					Mail mail = new Mail("ManagerController@locahost8083", manager.getManagerEmel(), "Added", mailAttachment,"You has been register as "+manager.getId());
+					boolean status = getNotificationsClient().postForObject(notificationsURL + "/registrationDetails", mail, Boolean.class);
+					System.out.println("Sending email status is "+status);
 				}
 			}
 		}
@@ -149,12 +151,29 @@ public class ManagerController extends RestClient{
 	}
 	
 	/**
+	 * Print manager details if found in db,
+	 * else create report n download
+	 */
+	@RequestMapping(value = "/printMng", method = RequestMethod.GET)
+	public void printDetails(@RequestParam String PrintId, HttpServletRequest request, HttpServletResponse response) throws Exception {	
+		DocMaster docMaster = managerService.getDocMaster(PrintId);
+		if(docMaster != null) {
+			Documents documents = new Documents();
+			documents = getDocumentsClient().getForObject(documentsURL+"/download/id/"+docMaster.getDocumentID(),Documents.class);
+			if (documents != null) {
+				writeFile(documents.getContents(),response,PrintId);
+			}
+		}else {
+			PrintManager(PrintId, request, response);
+		}
+	}
+	
+	/**
 	 * Print the manager details report based on manager id
 	 * This will call report services
 	 * @throws Exception 
 	 */
-	@RequestMapping(value = "/printMng", method = RequestMethod.GET)
-	public void PrintManager(@RequestParam String PrintId, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void PrintManager(String PrintId, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Report report = getReportsClient().getForObject(reportsURL + "/test?managerID="+PrintId, Report.class);
 		writeFile(report.getReportBytes(),response,PrintId);
 	}

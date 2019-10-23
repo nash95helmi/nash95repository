@@ -11,11 +11,17 @@ public class RestClient {
 	@Value("${service.url.documents}")
 	protected String documentsURL;
 	
+	@Value("${service.url.notifications}")
+	protected String notificationsURL;
+	
 	@Autowired
 	private ReportsClient reportsClient;
 	
 	@Autowired
 	private DocumentsClient documentsClient;
+	
+	@Autowired
+	private NotificationsClient notificationsClient;
 	
 	public ReportsClient getReportsClient() {
 		return reportsClient;
@@ -23,5 +29,9 @@ public class RestClient {
 	
 	protected DocumentsClient getDocumentsClient() {
 		return documentsClient;
+	}
+	
+	public NotificationsClient getNotificationsClient() {
+		return notificationsClient;
 	}
 }
