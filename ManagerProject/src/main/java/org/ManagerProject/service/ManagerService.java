@@ -2,6 +2,8 @@ package org.ManagerProject.service;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.ManagerProject.model.Department;
 import org.ManagerProject.model.DocMaster;
 import org.ManagerProject.model.Manager;
@@ -147,6 +149,14 @@ public class ManagerService {
 	}
 	
 	/**
+	 * Save updated details of manager
+	 * @param manager
+	 */
+	public void saveUpdManager(Manager manager) {
+		managerRepository.save(manager);
+	}
+	
+	/**
 	 * Find DocID based on managerID
 	 * @param managerID
 	 */
@@ -156,9 +166,6 @@ public class ManagerService {
 		if(opt.isPresent()){
 			docMaster = opt.get();
 		}
-//		if(opt != null) {
-//			docMaster = opt.get();
-//		}
 		return docMaster;
 	}
 	
@@ -170,7 +177,6 @@ public class ManagerService {
 	public void SaveDocMaster(DocMaster docMaster) {
 		docMasterRepo.save(docMaster);
 	}
-	
 	
 	/**
 	 * Get the manager by managerid, if found proceed to find 
@@ -213,5 +219,23 @@ public class ManagerService {
 			pos = optPosition.get();
 		}
 		return pos;
+	}
+	
+	/**
+	 * Delete manager from Manager master
+	 * @param managerID
+	 */
+	@Transactional	//Transactional is required when it comes to use deleteBy(other non-default id field)
+	public void deleteManagerMaster(String managerID) {
+		managerRepository.deleteByid(managerID);
+	}
+	
+	/**
+	 * Delete from Document master
+	 * @param managerID
+	 */
+	@Transactional
+	public void deleteDocMaster(String managerID) {
+		docMasterRepo.deleteByid(managerID);
 	}
 }

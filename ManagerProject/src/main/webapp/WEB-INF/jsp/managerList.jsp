@@ -59,7 +59,7 @@
 				<td><c:out value="${list.managerDept}"></c:out></td>
 				<td><c:out value="${list.managerSta}"></c:out></td>
 				<td><a href='viewManager?ManagerId=${list.id}&PositionId=${list.managerPos}&DepartmentId=${list.managerDept}'>View</a></td>
-				<td><a href='updateMng?UpdateId=${list.id}'>Edit</a></td> 
+				<td><a href='updateMng?UpdateId=${list.id}&PositionId=${list.managerPos}&DepartmentId=${list.managerDept}'>Edit</a></td> 
  				<td><a href='deleteMng?DeleteId=${list.id}'>Delete</a></td>
  				<td><a href='printMng?PrintId=${list.id}'>Print</a></td>
 			</tr>

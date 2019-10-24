@@ -125,10 +125,10 @@ public class ManagerController extends RestClient{
 					docMaster.setDocumentID(documents.getId());
 					managerService.SaveDocMaster(docMaster);
 					
-					MailAttachment mailAttachment = new MailAttachment(documents.getName(), documents.getContents(), documents.getType());
-					Mail mail = new Mail("ManagerController@locahost8083", manager.getManagerEmel(), "Added", mailAttachment,"You has been register as "+manager.getId());
-					boolean status = getNotificationsClient().postForObject(notificationsURL + "/registrationDetails", mail, Boolean.class);
-					System.out.println("Sending email status is "+status);
+//					MailAttachment mailAttachment = new MailAttachment(documents.getName(), documents.getContents(), documents.getType());
+//					Mail mail = new Mail("ManagerController@locahost8083", manager.getManagerEmel(), "Added", mailAttachment,"You has been register as "+manager.getId());
+//					boolean status = getNotificationsClient().postForObject(notificationsURL + "/registrationDetails", mail, Boolean.class);
+//					System.out.println("Sending email status is "+status);
 				}
 			}
 		}
@@ -147,6 +147,99 @@ public class ManagerController extends RestClient{
 		mav.addObject("manager", manager);
 		mav.addObject("department",department);
 		mav.addObject("position",position);
+		return mav;
+	}
+	
+	/**
+	 * Redirect to updateManager page
+	 * @param UpdateId
+	 * @param PositionId
+	 * @param DepartmentId
+	 * @return
+	 */
+	@RequestMapping(value = "/updateMng", method = RequestMethod.GET)
+	public ModelAndView updateManager(@RequestParam String UpdateId,  @RequestParam String PositionId, @RequestParam String DepartmentId) {
+		ModelAndView mav = new ModelAndView("updateManager");
+		Manager manager = managerService.GetManagerDetails(UpdateId);
+		Department department = managerService.GetDepartmentDetails(DepartmentId);
+		Position position = managerService.GetPositionDetails(PositionId);
+		String selectedPosL = position.getPosTitle();
+		String selectedDeptL = department.getDepartment(); 
+		Iterable<Department> dList = managerService.findAllDept();
+		Iterable<Position> pList = managerService.findAllPos();
+		mav.addObject("dList", dList);
+		mav.addObject("pList", pList);
+		mav.addObject("manager", manager);
+		mav.addObject("department", department);
+		mav.addObject("position", position);
+		mav.addObject("selectedPosL", selectedPosL);
+		mav.addObject("selectedDeptL", selectedDeptL);
+		mav.addObject("dList", dList);
+		mav.addObject("pList", pList);
+		return mav;
+	}
+	
+	/**
+	 * Save the updated Manager details
+	 * @return
+	 */
+	@RequestMapping(value = "saveUpd", method=RequestMethod.GET)
+	public ModelAndView saveUpdManager(@RequestParam String managerID, @RequestParam String fname, @RequestParam String lname,
+			 						   @RequestParam String postn, @RequestParam String dept, @RequestParam String mEmel) {
+		Manager manager = managerService.GetManagerDetails(managerID);
+		if(manager != null) {
+			manager.setManagerFName(fname);
+			manager.setManagerLName(lname);
+			manager.setManagerPos(managerService.getPostionID(postn));
+			manager.setManagerDept(managerService.getDepartmentID(dept));
+			manager.setManagerSta("Active");
+			manager.setManagerEmel(mEmel);
+			managerService.saveUpdManager(manager);
+			updateManagerDoc(managerID);
+		}
+		ModelAndView mav = findAll();
+		return mav;
+	}
+	
+	/**
+	 * Update documents in MongoDB
+	 * @param managerID
+	 */
+	public void updateManagerDoc(String managerID) {
+		DocMaster docMaster = managerService.getDocMaster(managerID);
+		Report report = getReportsClient().getForObject(reportsURL + "/test?managerID="+managerID, Report.class);
+		Documents documents = new Documents();
+		if(report != null) {
+			documents.setName(report.getFileName());
+			documents.setType(report.getMimeType());
+			documents.setContents(report.getReportBytes());
+			documents.setSize(String.valueOf(report.getReportBytes().length));
+			documents = getDocumentsClient().postForObject(documentsURL+"/upload", documents, Documents.class);
+			if(documents != null) {
+				if(docMaster != null) {
+					docMaster.setDocumentID(documents.getId());
+				}else {
+					docMaster = new DocMaster();
+					docMaster.setPersonID(managerID);
+					docMaster.setDocumentID(documents.getId());
+				}
+				managerService.SaveDocMaster(docMaster);
+			}
+		}
+	}
+	
+	/**
+	 * Delete the manager from manager master & doc master
+	 * Delete the data in mongoDB
+	 * @param DeleteId
+	 */
+	@RequestMapping(value = "/deleteMng", method = RequestMethod.GET)
+	public ModelAndView deleteManager(@RequestParam String DeleteId) {
+		DocMaster docMaster = managerService.getDocMaster(DeleteId);
+		getDocumentsClient().delete(documentsURL+"/delete/id/"+docMaster.getDocumentID());
+		managerService.deleteDocMaster(DeleteId);
+		managerService.deleteManagerMaster(DeleteId);
+		ModelAndView mav = findAll();
 		return mav;
 	}
 	
