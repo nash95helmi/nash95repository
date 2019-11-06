@@ -214,6 +214,9 @@ public class ManagerController extends RestClient{
 			documents.setType(report.getMimeType());
 			documents.setContents(report.getReportBytes());
 			documents.setSize(String.valueOf(report.getReportBytes().length));
+			if(docMaster != null) {
+				getDocumentsClient().delete(documentsURL+"/delete/id/"+docMaster.getDocumentID());
+			}
 			documents = getDocumentsClient().postForObject(documentsURL+"/upload", documents, Documents.class);
 			if(documents != null) {
 				if(docMaster != null) {
