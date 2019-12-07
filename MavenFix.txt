@@ -1,0 +1,7 @@
+For Windows
+
+CD (change directory) to
+<user-directory>\.m2\repository
+execute this command
+for /r %i in (*.lastUpdated) do del %i
+Right click your project and choose Update Dependencies
